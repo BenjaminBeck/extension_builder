@@ -614,7 +614,8 @@ class FileGenerator
             $this->mkdir_deep($publicResourcesDirectory, 'Icons');
             $this->iconsDirectory = $publicResourcesDirectory . 'Icons/';
             $needsRelationIcon = false;
-            foreach ($this->extension->getDomainObjects() as $domainObject) {
+            $domainObjects = $this->extension->getDomainObjects();
+            if(is_array($domainObjects)) foreach ($domainObjects as $domainObject) {
                 if ($domainObject->hasRelations()) {
                     $needsRelationIcon = true;
                 }
@@ -625,13 +626,16 @@ class FileGenerator
                     $this->iconsDirectory . 'relation.gif'
                 );
             }
-            foreach ($this->extension->getBackendModules() as $backendModule) {
+            $backendModules = $this->extension->getBackendModules();
+
+            if(is_array($backendModules)) foreach ($backendModules as $backendModule) {
                 $this->upload_copy_move(
                     $this->codeTemplateRootPath. 'Resources/Public/Icons/user_extension.svg',
                     $this->iconsDirectory . 'user_mod_' . $backendModule->getKey() . '.svg'
                 );
             }
-            foreach ($this->extension->getPlugins() as $plugin) {
+            $plugins = $this->extension->getPlugins();
+            if(is_array($plugins)) foreach ($plugins as $plugin) {
                 $this->upload_copy_move(
                     $this->codeTemplateRootPath. 'Resources/Public/Icons/user_extension.svg',
                     $this->iconsDirectory . 'user_plugin_' . $plugin->getKey() . '.svg'
