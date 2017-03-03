@@ -14,6 +14,7 @@ namespace EBT\ExtensionBuilder\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use EBT\ExtensionBuilder\Configuration\ConfigurationManager;
 use EBT\ExtensionBuilder\Domain\Repository\ExtensionRepository;
 use EBT\ExtensionBuilder\Domain\Validator\ExtensionValidator;
 use EBT\ExtensionBuilder\Service\ExtensionSchemaBuilder;
@@ -22,6 +23,7 @@ use EBT\ExtensionBuilder\Utility\ExtensionInstallationStatus;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Controller of the Extension Builder extension
@@ -80,7 +82,10 @@ class BuilderModuleController extends ActionController
      */
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
-        $this->configurationManager = $configurationManager;
+         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->configurationManager = $objectManager->get(\EBT\ExtensionBuilder\Configuration\ConfigurationManager::class);
+        // $this->configurationManager = $configurationManager;
         $this->settings = $this->configurationManager->getSettings();
     }
 
